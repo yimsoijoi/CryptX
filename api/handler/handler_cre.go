@@ -9,9 +9,10 @@ import (
 )
 
 type CreateOrderReq struct {
-	Amount int    `json:"amount"`
-	To     string `json:"to"`
-	From   string `json:"from"`
+	Amount string          `json:"amount"`
+	To     string          `json:"to"`
+	From   string          `json:"from"`
+	Token  datamodel.Token `json:"token"`
 }
 
 func (h *handler) CreateOrder(c *fiber.Ctx) error {
@@ -27,8 +28,7 @@ func (h *handler) CreateOrder(c *fiber.Ctx) error {
 	toWallet := datamodel.NewWallet(datamodel.Address(req.To))
 	fromWallet := datamodel.NewWallet(datamodel.Address(req.From))
 	wallets := []*datamodel.Wallet{fromWallet, toWallet}
-	order := datamodel.NewOrder(*fromWallet, *toWallet, req.Amount)
-
+	order := datamodel.NewOrder(*fromWallet, *toWallet, req.Amount, req.Token)
 	// Write to Postgres
 	for _, wallet := range wallets {
 		var _wallet datamodel.Wallet

@@ -8,6 +8,8 @@ import (
 type Handler interface {
 	CreateOrder(*fiber.Ctx) error
 	Pay(*fiber.Ctx) error
+	GetOrders(*fiber.Ctx) error
+	GetOrder(*fiber.Ctx) error
 }
 
 type handler struct {
