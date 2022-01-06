@@ -23,7 +23,7 @@ func (h *handler) Pay(c *fiber.Ctx) error {
 		})
 	}
 	// Pay here
-	if err := pay.PayERC20(c.Context(), &order.Token, common.HexToAddress(string(order.To.Address)), order.Amount); err != nil {
+	if err := pay.PayERC20(c.Context(), h.wallet, &order.Token, common.HexToAddress(string(order.To.Address)), order.Amount); err != nil {
 		return c.Status(500).JSON(map[string]interface{}{
 			"error":      err.Error(),
 			"order_uuid": orderUuid,

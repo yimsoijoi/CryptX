@@ -1,0 +1,6 @@
+wallet: "0x000000000000"
+postgres:
+  user: "postgres"
+  password: "Godisgay!666"
+  host: "localhost"
+  port: "5432"

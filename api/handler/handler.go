@@ -13,11 +13,13 @@ type Handler interface {
 }
 
 type handler struct {
-	pg *gorm.DB
+	pg     *gorm.DB
+	wallet string
 }
 
-func New(db *gorm.DB) Handler {
+func New(db *gorm.DB, wallet string) Handler {
 	return &handler{
-		pg: db,
+		pg:     db,
+		wallet: wallet,
 	}
 }

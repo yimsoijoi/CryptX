@@ -1,2 +1,4 @@
 blockchain
 contracts
+config/config.yml
+lib/postgres/config.yml

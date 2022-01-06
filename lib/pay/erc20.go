@@ -22,6 +22,7 @@ import (
 // PayERC20 pays token to toAddress
 func PayERC20(
 	ctx context.Context,
+	wallet string,
 	token *datamodel.Token,
 	toAddress common.Address,
 	amountStr string,
@@ -32,7 +33,7 @@ func PayERC20(
 		return errors.New("init client failed")
 	}
 
-	privateKey, err := crypto.HexToECDSA("MySecretPrivateKey")
+	privateKey, err := crypto.HexToECDSA(wallet)
 	if err != nil {
 		log.Println("can't change privatekey to ECDSA")
 		return errors.New("parse ECDSA failed")
