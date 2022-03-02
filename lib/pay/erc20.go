@@ -47,6 +47,7 @@ func PayERC20(
 
 	tokenAddress := common.HexToAddress(string(token.Address))
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
+	//คล้ายๆ auto salt
 	nonce, err := client.PendingNonceAt(ctx, fromAddress)
 	if err != nil {
 		log.Println("can't pending nonce", err.Error())
@@ -58,13 +59,14 @@ func PayERC20(
 		log.Println("can't estimate gas price", err.Error())
 		return errors.New("estimate gas price failed")
 	}
-
+	// เพื่อยืนยันmethodที่เรียกเป็นmethodที่ต้องการใช้จริงๆ
 	transferFnSignature := []byte("transfer(address,uint256)")
+	// create encoder
 	hash := sha3.NewLegacyKeccak256()
+	// encoder.Write(value)
 	hash.Write(transferFnSignature)
 	methodID := hash.Sum(nil)[:4]
 	paddedAddress := common.LeftPadBytes(toAddress.Bytes(), 32)
-
 	amount := new(big.Int)
 	amount, ok = amount.SetString(amountStr, token.Decimal)
 	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)
@@ -73,6 +75,7 @@ func PayERC20(
 	data = append(data, methodID...)
 	data = append(data, paddedAddress...)
 	data = append(data, paddedAmount...)
+	// transfer(toWallet, amount)
 
 	gasLimit, err := client.EstimateGas(context.Background(), ethereum.CallMsg{
 		To:   &toAddress,
